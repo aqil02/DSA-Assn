@@ -2,10 +2,21 @@
 //
 
 #include "stdafx.h"
+#include "tree.h"
+#include <iostream>
 
+using namespace std;
 
 int main()
 {
+	Tree tree;
+	tree.insert(1);
+	tree.insert(2);
+	tree.insert(3);
+	cout << "Success" << endl;
+	system("PAUSE");
+	tree.search(5);
+	system("PAUSE");
     return 0;
 }
 

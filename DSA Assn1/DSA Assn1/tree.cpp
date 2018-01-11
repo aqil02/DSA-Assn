@@ -1,11 +1,13 @@
-#include "tree.h"
 #include "stdafx.h"
+#include "tree.h"
+#include <iostream>
+
+using namespace std;
 
 Tree::Tree()
 {
 	root = NULL; // Intialise root node to NULL
-
-};
+}
 Tree::~Tree() {};
 
 void Tree::insert(ItemType value)
@@ -19,27 +21,27 @@ void Tree::insert(ItemType value)
 	//Create a new node at that empty area and insert the value into it
 	if (root == NULL) //(1)
 	{
-		root->value = value; //Add value to root node
-		node *left = new node;// Create new nodes for left and right of root pre-emptively
-		node *right = new node;
-		root->left_node = left;
-		root->right_node = right;
+		node *tempnode = new node;
+		tempnode->value = value;
+		root = tempnode; //Add value to root node
 	}
 
 	else //(2)
 	{
+
 		node *tempnode = new node; //Used to store next targeted node
+		node *valuenode = new node; //Used to store new value
+		valuenode->value = value;
 		tempnode = root;
 		while (tempnode->value != value)
 		{
 			if (value < tempnode->value) //Less (3a)
 			{
 				//Run to see if predecessor exists
-				if (tempnode->left_node->value == NULL)
+				if (tempnode->left_node == NULL) //Doesnt exist
 				{
-					tempnode = tempnode->left_node;
-					tempnode->value = value;
-					break; //(4)
+					tempnode->left_node = valuenode;
+					break;
 				}
 				else
 				{
@@ -48,11 +50,10 @@ void Tree::insert(ItemType value)
 			}
 			else if (value > tempnode->value) //More (3b)
 			{
-				//Run to see if successor exits
-				if (tempnode->right_node->value = NULL)
+				//Run to see if successor exists
+				if (tempnode->right_node == NULL)
 				{
-					tempnode = tempnode->right_node;
-					tempnode->value = value;
+					tempnode->right_node = valuenode;
 					break; //(4)
 				}
 				else
@@ -61,7 +62,60 @@ void Tree::insert(ItemType value)
 				}
 			}
 		}
-
 	}
-
 };
+void Tree::search(ItemType value)
+{
+	//Parse through tree to find intended value
+	node *tempnode = new node;
+	node *prevnode = new node;
+	tempnode = root;
+	int direction;
+	int statuscode = -1; // 0 represents found, 1 represents not found
+	if (root->value == value)
+	{
+		cout << "Root" << endl;
+	}
+	while (tempnode->value != value)
+	{
+
+		if (value > tempnode->value)
+		{
+			if (tempnode->right_node == NULL)
+			{
+				cout << "Target not found" << endl;
+				statuscode = 0;
+				break;
+			}
+			prevnode = tempnode;
+			tempnode = tempnode->right_node;
+			direction = 0; //Signifies direction as right
+			cout << "R -> ";
+		}
+		else if (value < tempnode->value)
+		{
+			if (tempnode->left_node == NULL)
+			{
+				cout << "Target not found" << endl;
+				statuscode = 0;
+				break;
+			}
+			prevnode = tempnode;
+			tempnode = tempnode->left_node;
+			direction = 1; //Signifies direction as left
+			cout << "L -> ";
+		}
+	}
+	if (statuscode != 0)
+	{
+		cout << "(" << value << ")" << endl;
+	}
+}
+void Tree::remove(ItemType value)
+{
+	search(value);
+}
+void Tree::fulldisplay()
+{
+
+}

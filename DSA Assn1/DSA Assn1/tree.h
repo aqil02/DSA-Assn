@@ -10,6 +10,7 @@ private:
 		ItemType value;
 		node *left_node;
 		node *right_node;
+		node() :value(NULL),left_node(NULL), right_node(NULL) {}
 	};
 	node *root;
 public:
@@ -17,9 +18,10 @@ public:
 	~Tree();
 
 	void insert(ItemType value); //Step 1: Insert (Regardless of balancing, only follow basic rules)
-	void remove(ItemType value);
+	void remove(ItemType value); 
 	void search(ItemType value);
-	void displayinasc();
-	void displayNthnode(ItemType nth);
+	//void displayinasc();
+	//void displayNthnode(ItemType nth);
 	void fulldisplay();
+	//void rebalance(); //Rebalancing Algorithm
 };
