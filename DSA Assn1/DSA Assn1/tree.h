@@ -19,7 +19,8 @@ public:
 
 	void insert(ItemType value); //Step 1: Insert (Regardless of balancing, only follow basic rules)
 	void remove(ItemType value); 
-	void search(ItemType value);
+	int search(ItemType value,node *targetnode);
+	void traverse(ItemType value);
 	//void displayinasc();
 	//void displayNthnode(ItemType nth);
 	void fulldisplay();

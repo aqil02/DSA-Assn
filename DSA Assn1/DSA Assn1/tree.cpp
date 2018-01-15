@@ -64,56 +64,60 @@ void Tree::insert(ItemType value)
 		}
 	}
 };
-void Tree::search(ItemType value)
+int Tree::search(ItemType value,node *targetnode)
 {
-	//Parse through tree to find intended value
-	node *tempnode = new node;
-	node *prevnode = new node;
-	tempnode = root;
-	int direction;
-	int statuscode = -1; // 0 represents found, 1 represents not found
+	int mode; //Decides whether to print out or not
+	
+	if (targetnode == NULL)
+	{
+		return 0;
+	}
+	else if (targetnode->value == value)
+	{
+		return 1;
+	}
+	
+	mode = search(value, targetnode->left_node);
+	if (mode == 1)
+	{
+		cout << "L " << endl;
+		cout << targetnode->value << endl;
+		return 1;
+	}
+	mode = search(value, targetnode->right_node);
+	if (mode == 1)
+	{
+		cout << "R " << endl;
+		cout << targetnode->value << endl;
+		return 1;
+	}
+	return 0;
+}
+void Tree::traverse(ItemType value)
+{
 	if (root->value == value)
 	{
 		cout << "Root" << endl;
+		return;
+	}
+	search(value, root);
+	cout << value << endl;
+}
+void Tree::remove(ItemType value) //Target requested node --> link previous node to next node --> delete current node from memory
+{
+	node *tempnode = new node; //Current node
+	node *prevnode = new node; //Previous node
+	tempnode = root;
+	int statuscode = -1; //Refer to search
+	//Target requested node
+	if (root->value = value)
+	{
+		
 	}
 	while (tempnode->value != value)
 	{
 
-		if (value > tempnode->value)
-		{
-			if (tempnode->right_node == NULL)
-			{
-				cout << "Target not found" << endl;
-				statuscode = 0;
-				break;
-			}
-			prevnode = tempnode;
-			tempnode = tempnode->right_node;
-			direction = 0; //Signifies direction as right
-			cout << "R -> ";
-		}
-		else if (value < tempnode->value)
-		{
-			if (tempnode->left_node == NULL)
-			{
-				cout << "Target not found" << endl;
-				statuscode = 0;
-				break;
-			}
-			prevnode = tempnode;
-			tempnode = tempnode->left_node;
-			direction = 1; //Signifies direction as left
-			cout << "L -> ";
-		}
 	}
-	if (statuscode != 0)
-	{
-		cout << "(" << value << ")" << endl;
-	}
-}
-void Tree::remove(ItemType value)
-{
-	search(value);
 }
 void Tree::fulldisplay()
 {
