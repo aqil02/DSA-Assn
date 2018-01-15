@@ -80,15 +80,15 @@ int Tree::search(ItemType value,node *targetnode)
 	mode = search(value, targetnode->left_node);
 	if (mode == 1)
 	{
-		cout << "L " << endl;
-		cout << targetnode->value << endl;
+		cout << "L ";
+		//cout << targetnode->value << endl;
 		return 1;
 	}
 	mode = search(value, targetnode->right_node);
 	if (mode == 1)
 	{
-		cout << "R " << endl;
-		cout << targetnode->value << endl;
+		cout << "R -> ";
+		//cout << targetnode->value << endl;
 		return 1;
 	}
 	return 0;
@@ -108,16 +108,21 @@ void Tree::remove(ItemType value) //Target requested node --> link previous node
 	node *tempnode = new node; //Current node
 	node *prevnode = new node; //Previous node
 	tempnode = root;
-	int statuscode = -1; //Refer to search
-	//Target requested node
-	if (root->value = value)
+	
+	while (tempnode->value != value || tempnode == NULL)
 	{
-		
+		if (value > tempnode->value)
+		{
+			prevnode = tempnode;
+			tempnode = tempnode->right_node;
+		}
+		else if (value < tempnode->value)
+		{
+			prevnode = tempnode;
+			tempnode = tempnode->left_node;
+		}
 	}
-	while (tempnode->value != value)
-	{
-
-	}
+	
 }
 void Tree::fulldisplay()
 {
