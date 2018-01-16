@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "tree.h"
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -80,7 +81,7 @@ int Tree::search(ItemType value,node *targetnode)
 	mode = search(value, targetnode->left_node);
 	if (mode == 1)
 	{
-		cout << "L ";
+		cout << "L -> ";
 		//cout << targetnode->value << endl;
 		return 1;
 	}
@@ -95,34 +96,106 @@ int Tree::search(ItemType value,node *targetnode)
 }
 void Tree::traverse(ItemType value)
 {
+	int status = -1;
 	if (root->value == value)
 	{
 		cout << "Root" << endl;
 		return;
 	}
-	search(value, root);
-	cout << value << endl;
+	status = search(value, root);
+	//cout << status << endl;
+	if (status == 0)
+	{
+		cout << "Lost Target" << endl;
+	}
+	else if (status == 1) 
+	{
+		cout << value << endl;
+	}
 }
 void Tree::remove(ItemType value) //Target requested node --> link previous node to next node --> delete current node from memory
 {
+	//TODO: Add code to handle deletion of root
 	node *tempnode = new node; //Current node
 	node *prevnode = new node; //Previous node
 	tempnode = root;
-	
+	vector <int> direction; //Stores directional data; 1 denotes left,2 denotes right
+	vector <int> ::iterator i;
 	while (tempnode->value != value || tempnode == NULL)
 	{
 		if (value > tempnode->value)
 		{
+			direction.push_back(2);
 			prevnode = tempnode;
 			tempnode = tempnode->right_node;
 		}
 		else if (value < tempnode->value)
 		{
+			direction.push_back(1);
 			prevnode = tempnode;
 			tempnode = tempnode->left_node;
 		}
 	}
-	
+	if (tempnode == NULL)
+	{
+		cout << "Requested value unavailable" << endl;
+		return;
+	}
+	//Removal branches
+	//1)No children
+	if (tempnode->left_node == NULL && tempnode->right_node == NULL)
+	{
+		if (direction.back() == 1) // Came from the left
+		{
+			prevnode->left_node = NULL;
+		}
+		else if (direction.back() == 2)
+		{
+			prevnode->right_node = NULL;
+		}
+		delete tempnode; //Memory Cleanup
+	}
+	//2)1 Child
+	else if (tempnode->left_node == NULL) //1 Child on the right_node
+	{
+		prevnode->right_node = tempnode->right_node; //Links previous node to child node
+		delete tempnode;
+	}
+	else if (tempnode->right_node == NULL)
+	{
+		prevnode->left_node = tempnode->left_node;
+		delete tempnode;
+	}
+	//3)2 Children
+	else
+	{
+		if (direction.back() == 1) //From the left
+		{
+			prevnode->left_node = tempnode->left_node;
+			prevnode->left_node->right_node = tempnode->right_node;
+		}
+		else if (direction.back() == 2)
+		{
+			prevnode->right_node = tempnode->right_node;
+			prevnode->right_node->left_node = tempnode->left_node;
+		}
+		delete tempnode;
+	}
+}
+void Tree::displayinasc()
+{
+	displayinasc(root);
+}
+void Tree::displayinasc(node *tempnode)
+{
+	if (tempnode == NULL)
+	{
+		return;
+	}
+	displayinasc(tempnode->left_node);
+	cout << tempnode->value << ",";
+	displayinasc(tempnode->right_node);
+
 }
 void Tree::fulldisplay()
 {
