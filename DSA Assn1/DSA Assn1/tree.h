@@ -24,6 +24,15 @@ public:
 	void displayinasc();
 	void displayinasc(node *tempnode); //COMPLETE
 	//void displayNthnode(ItemType nth);
-	void fulldisplay();
-	//void rebalance(); //Rebalancing Algorithm
+	void fulldisplay(node *tempnode, int level);
+	void fulldisplay();//Overloaded
+	//Rebalancing algorithm
+	node *rebalance(node *temp); 
+	int height(node *temp);
+	int diff(node *temp);
+	node *leftrotate(node *nodeN);
+	node *rightrotate(node *nodeN);
+	node *leftrightrotate(node *nodeN);
+	node *rightleftrotate(node *nodeN);
+	
 };

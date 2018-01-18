@@ -2,7 +2,7 @@
 #include "tree.h"
 #include <iostream>
 #include <vector>
-
+#include <algorithm>
 using namespace std;
 
 Tree::Tree()
@@ -32,8 +32,10 @@ void Tree::insert(ItemType value)
 
 		node *tempnode = new node; //Used to store next targeted node
 		node *valuenode = new node; //Used to store new value
+		node *testnode = new node;
 		valuenode->value = value;
 		tempnode = root;
+		testnode = root;
 		while (tempnode->value != value)
 		{
 			if (value < tempnode->value) //Less (3a)
@@ -63,6 +65,7 @@ void Tree::insert(ItemType value)
 				}
 			}
 		}
+		testnode = rebalance(testnode);
 	}
 };
 int Tree::search(ItemType value,node *targetnode)
@@ -197,7 +200,93 @@ void Tree::displayinasc(node *tempnode)
 	displayinasc(tempnode->right_node);
 
 }
+int Tree::height(node *temp)
+{
+	int h = 0;
+	if (temp != NULL)
+	{
+		int l_height = height(temp->left_node);
+		int r_height = height(temp->right_node);
+		int max_height = max(l_height, r_height);
+		h = max_height + 1;
+	}
+	return h;
+}
+int Tree::diff(node *temp)
+{
+	int l_height = height(temp->left_node);
+	int r_height = height(temp->right_node);
+	int factor = l_height - r_height;
+	return factor;
+}
+
+Tree::node *Tree::leftrotate(node *nodeN)
+{
+	node *nodeC = new node;
+	nodeC = nodeN->right_node;
+	nodeN->right_node = nodeC->left_node;
+	nodeC->left_node = nodeN;
+	return nodeC;
+}
+Tree::node *Tree::rightrotate(node *nodeN)
+{
+	node *nodeC = new node;
+	nodeC = nodeN->left_node;
+	nodeN->left_node = nodeC->right_node;
+	nodeC->right_node = nodeN;
+	return nodeC;
+}
+Tree::node *Tree::leftrightrotate(node *nodeN)
+{
+	node *nodeC = new node;
+	nodeC = nodeN->left_node;
+	nodeN->left_node = leftrotate(nodeC);
+	return rightrotate(nodeN);
+}
+Tree::node *Tree::rightleftrotate(node *nodeN)
+{
+	node *nodeC = new node;
+	nodeC = nodeN->right_node;
+	nodeN->right_node = rightrotate(nodeC);
+	return leftrotate(nodeN);
+}
+Tree::node *Tree::rebalance(node *temp)
+{
+	int balance_factor = diff(temp);
+	if (balance_factor > 1)
+	{
+		if (diff(temp->left_node) > 0)
+			temp = rightrotate(temp);
+		else
+			temp = leftrightrotate(temp);
+	}
+	else if (balance_factor < -1)
+	{
+		if (diff(temp->right_node) > 0)
+			temp = rightleftrotate(temp);
+		else
+			temp = leftrotate(temp);
+	}
+	return temp;
+}
+void Tree::fulldisplay(node *temp,int level)
+{
+	int i;
+	if (temp != NULL) //Base case
+	{
+		fulldisplay(temp->right_node, level + 1);
+		cout << "\n";
+		if (temp == root)
+		{
+			cout << "Root -> ";
+		}
+		for (i = 0; i < level && temp != root; i++)
+			cout << "       ";
+		cout << temp->value;
+		fulldisplay(temp->left_node, level + 1);
+	}
+}
 void Tree::fulldisplay()
 {
-
+	fulldisplay(root, 1);
 }
