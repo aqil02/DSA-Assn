@@ -11,63 +11,33 @@ Tree::Tree()
 }
 Tree::~Tree() {};
 
-void Tree::insert(ItemType value)
+Tree::node *Tree::insert(node *root,ItemType value)
 {
-	//Check if Root node is null --> if it is, add this value to that (1)
-
-	//Else check if value is lesser or more than root --> (2)
-	//Less --> Check the left node (Predecessor) and see if it has any children(3a)
-	//More --> Check the right node (Successor) and see if it has any children(3b)
-	//Stop when less or more and the corresponding direction is empty (4)
-	//Create a new node at that empty area and insert the value into it
-	if (root == NULL) //(1)
+	if (root == NULL) //Base case
 	{
-		node *tempnode = new node;
-		tempnode->value = value;
-		root = tempnode; //Add value to root node
+		node *root = new node;
+		root->value = value;
+		return root;
 	}
-
-	else //(2)
+	else if (value < root->value)
 	{
-
-		node *tempnode = new node; //Used to store next targeted node
-		node *valuenode = new node; //Used to store new value
-		node *testnode = new node;
-		valuenode->value = value;
-		tempnode = root;
-		testnode = root;
-		while (tempnode->value != value)
-		{
-			if (value < tempnode->value) //Less (3a)
-			{
-				//Run to see if predecessor exists
-				if (tempnode->left_node == NULL) //Doesnt exist
-				{
-					tempnode->left_node = valuenode;
-					break;
-				}
-				else
-				{
-					tempnode = tempnode->left_node;
-				}
-			}
-			else if (value > tempnode->value) //More (3b)
-			{
-				//Run to see if successor exists
-				if (tempnode->right_node == NULL)
-				{
-					tempnode->right_node = valuenode;
-					break; //(4)
-				}
-				else
-				{
-					tempnode = tempnode->right_node;
-				}
-			}
-		}
-		testnode = rebalance(testnode);
+		root->left_node = insert(root->left_node, value);
+		root = rebalance(root);
 	}
-};
+	else if (value >= root->value)
+	{
+		root->right_node = insert(root->right_node, value);
+		root = rebalance(root);
+	}
+	return root;
+}
+
+void Tree::insert(int value)
+{
+	root = insert(root, value);
+	fulldisplay();
+}
+
 int Tree::search(ItemType value,node *targetnode)
 {
 	int mode; //Decides whether to print out or not
@@ -116,6 +86,7 @@ void Tree::traverse(ItemType value)
 		cout << value << endl;
 	}
 }
+
 void Tree::remove(ItemType value) //Target requested node --> link previous node to next node --> delete current node from memory
 {
 	//TODO: Add code to handle deletion of root
@@ -185,21 +156,8 @@ void Tree::remove(ItemType value) //Target requested node --> link previous node
 		delete tempnode;
 	}
 }
-void Tree::displayinasc()
-{
-	displayinasc(root);
-}
-void Tree::displayinasc(node *tempnode)
-{
-	if (tempnode == NULL)
-	{
-		return;
-	}
-	displayinasc(tempnode->left_node);
-	cout << tempnode->value << ",";
-	displayinasc(tempnode->right_node);
 
-}
+//Rebalancing code
 int Tree::height(node *temp)
 {
 	int h = 0;
@@ -269,6 +227,7 @@ Tree::node *Tree::rebalance(node *temp)
 	}
 	return temp;
 }
+//Display
 void Tree::fulldisplay(node *temp,int level)
 {
 	int i;
@@ -289,4 +248,35 @@ void Tree::fulldisplay(node *temp,int level)
 void Tree::fulldisplay()
 {
 	fulldisplay(root, 1);
+	cout << endl;
+}
+void Tree::displayNthnode()
+{
+	displayNthnode(root, 1);
+}
+void Tree::displayNthnode(node *tempnode, ItemType nth)
+{
+	if (tempnode == NULL)
+	{
+		return;
+	}
+	cout << tempnode->value << "," << endl;
+	displayNthnode(tempnode->left_node, nth);
+	displayNthnode(tempnode->right_node, nth);
+
+}
+void Tree::displayinasc()
+{
+	displayinasc(root);
+}
+void Tree::displayinasc(node *tempnode)
+{
+	if (tempnode == NULL)
+	{
+		return;
+	}
+	displayinasc(tempnode->left_node);
+	cout << tempnode->value << ",";
+	displayinasc(tempnode->right_node);
+
 }

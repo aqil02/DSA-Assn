@@ -15,13 +15,18 @@ int main()
 	tree.insert(3);
 	tree.insert(4);
 	tree.insert(5);
-	cout << "Success" << endl;
+	//tree.insert(6);
+	//tree.insert(7);
+	//tree.insert(8);
+	//tree.insert(9);
+	//tree.insert(10);
 	system("PAUSE");
 	tree.fulldisplay();
+	//tree.traverse(7);
 	//tree.traverse(5);
 	//tree.remove(5);
 	//tree.traverse(5);
-	//tree.displayinasc();
+	tree.displayNthnode();
 	
 	system("PAUSE");
     return 0;
