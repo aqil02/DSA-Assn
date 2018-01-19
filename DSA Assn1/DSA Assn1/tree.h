@@ -19,15 +19,22 @@ public:
 
 	node *insert(node *root,ItemType value); //Step 1: Insert (Regardless of balancing, only follow basic rules) //COMPLETE
 	void insert(int value);
-	void remove(ItemType value); 
+	node *minvaluenode(node *node);
+	node *remove(node* tempnode,ItemType value); 
+	void remove(ItemType value);
+
 	int search(ItemType value,node *targetnode);
-	void traverse(ItemType value);
+	void search(ItemType value);
+
 	void displayinasc();
 	void displayinasc(node *tempnode); //COMPLETE
+
 	void displayNthnode();
-	void displayNthnode(node *tempnode,ItemType nth);
+	void displayNthnode(node *tempnode,ItemType nth,int counter);
+
 	void fulldisplay(node *tempnode, int level);
 	void fulldisplay();//Overloaded
+
 	//Rebalancing algorithm
 	node *rebalance(node *temp); 
 	int height(node *temp);

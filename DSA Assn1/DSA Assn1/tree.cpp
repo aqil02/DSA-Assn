@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "tree.h"
 #include <iostream>
-#include <vector>
 #include <algorithm>
 using namespace std;
 
@@ -31,11 +30,9 @@ Tree::node *Tree::insert(node *root,ItemType value)
 	}
 	return root;
 }
-
 void Tree::insert(int value)
 {
 	root = insert(root, value);
-	fulldisplay();
 }
 
 int Tree::search(ItemType value,node *targetnode)
@@ -67,7 +64,7 @@ int Tree::search(ItemType value,node *targetnode)
 	}
 	return 0;
 }
-void Tree::traverse(ItemType value)
+void Tree::search(ItemType value)
 {
 	int status = -1;
 	if (root->value == value)
@@ -86,77 +83,63 @@ void Tree::traverse(ItemType value)
 		cout << value << endl;
 	}
 }
-
-void Tree::remove(ItemType value) //Target requested node --> link previous node to next node --> delete current node from memory
+//Remove
+Tree::node *Tree::minvaluenode(node *tempnode)
 {
-	//TODO: Add code to handle deletion of root
-	node *tempnode = new node; //Current node
-	node *prevnode = new node; //Previous node
-	tempnode = root;
-	vector <int> direction; //Stores directional data; 1 denotes left,2 denotes right
-	vector <int> ::iterator i;
-	while (tempnode->value != value || tempnode == NULL)
-	{
-		if (value > tempnode->value)
-		{
-			direction.push_back(2);
-			prevnode = tempnode;
-			tempnode = tempnode->right_node;
-		}
-		else if (value < tempnode->value)
-		{
-			direction.push_back(1);
-			prevnode = tempnode;
-			tempnode = tempnode->left_node;
-		}
-	}
-	if (tempnode == NULL)
-	{
-		cout << "Requested value unavailable" << endl;
-		return;
-	}
-	//Removal branches
-	//1)No children
-	if (tempnode->left_node == NULL && tempnode->right_node == NULL)
-	{
-		if (direction.back() == 1) // Came from the left
-		{
-			prevnode->left_node = NULL;
-		}
-		else if (direction.back() == 2)
-		{
-			prevnode->right_node = NULL;
-		}
-		delete tempnode; //Memory Cleanup
-	}
-	//2)1 Child
-	else if (tempnode->left_node == NULL) //1 Child on the right_node
-	{
-		prevnode->right_node = tempnode->right_node; //Links previous node to child node
-		delete tempnode;
-	}
-	else if (tempnode->right_node == NULL)
-	{
-		prevnode->left_node = tempnode->left_node;
-		delete tempnode;
-	}
-	//3)2 Children
-	else
-	{
-		if (direction.back() == 1) //From the left
-		{
-			prevnode->left_node = tempnode->left_node;
-			prevnode->left_node->right_node = tempnode->right_node;
-		}
-		else if (direction.back() == 2)
-		{
-			prevnode->right_node = tempnode->right_node;
-			prevnode->right_node->left_node = tempnode->left_node;
-		}
-		delete tempnode;
-	}
-}
+	node *current = new node;
 
+	//While loop to see left-most(lowest value) leaf
+	while (current->left_node != NULL)
+	{
+		current = current->left_node;
+	}
+	return current;
+}
+Tree::node *Tree::remove(node *root, ItemType value) //Target requested node --> link previous node to next node --> delete current node from memory
+{
+	if (root == NULL)
+	{
+		cout << "Target not found" << endl;
+		return root; //Target not found
+	}
+	else if (value > root->value)
+	{
+		root->right_node = remove(root->right_node, value);
+	}
+	else if (value < root->value)
+	{
+		root->left_node = remove(root->left_node, value);
+	}
+	else if (value == root->value)
+	{
+		if (root -> right_node == NULL || root->left_node == NULL) // One or no children
+		{
+			node *tempnode1 = root->left_node ? root->left_node : root->right_node; // Sets tempnode1 to the node that ISN'T NULL
+			if (tempnode1 == NULL) //No children
+			{
+				tempnode1 = root;
+				root = NULL; //Completely deletes(nullifies) this node
+			}
+			else
+			{
+				*root = *tempnode1; //Sets its only child to replace itself
+			}
+		}
+		else //Two children
+		{
+			node *tempnode1 = new node;
+			tempnode1 = minvaluenode(root->right_node);
+			root->value = tempnode1->value;
+			root->right_node = remove(root->right_node, tempnode1->value);
+		}
+	}
+	return root;
+}
+void Tree::remove(ItemType value)
+{
+	remove(root, value);
+	root = rebalance(root); //Returns the balanced node with proper connected nodes
+}
 //Rebalancing code
 int Tree::height(node *temp)
 {
@@ -252,17 +235,23 @@ void Tree::fulldisplay()
 }
 void Tree::displayNthnode()
 {
-	displayNthnode(root, 1);
+	displayNthnode(root,3,0);
 }
-void Tree::displayNthnode(node *tempnode, ItemType nth)
+void Tree::displayNthnode(node *tempnode, ItemType nth, int counter)
 {
 	if (tempnode == NULL)
 	{
 		return;
 	}
-	cout << tempnode->value << "," << endl;
-	displayNthnode(tempnode->left_node, nth);
-	displayNthnode(tempnode->right_node, nth);
+	counter++;
+	if (counter == nth)
+	{
+		cout << tempnode->value << "<< Value" << endl;
+		return;
+	}
+	displayNthnode(tempnode->left_node, nth,counter);
+	counter++;
+	displayNthnode(tempnode->right_node, nth, counter);
 
 }
 void Tree::displayinasc()
