@@ -29,7 +29,7 @@ public:
 	void displayinasc();
 	void displayinasc(node *tempnode); //COMPLETE
 
-	void displayNthnode();
+	void displayNthnode(int value);
 	void displayNthnode(node *tempnode,ItemType nth,int counter);
 
 	void fulldisplay(node *tempnode, int level);

@@ -93,6 +93,10 @@ Tree::node *Tree::minvaluenode(node *tempnode)
 	{
 		current = current->left_node;
 	}
+	if (current->value == 0)
+	{
+		current = tempnode;
+	}
 	return current;
 }
 Tree::node *Tree::remove(node *root, ItemType value) //Target requested node --> link previous node to next node --> delete current node from memory
@@ -233,9 +237,9 @@ void Tree::fulldisplay()
 	fulldisplay(root, 1);
 	cout << endl;
 }
-void Tree::displayNthnode()
+void Tree::displayNthnode(int value)
 {
-	displayNthnode(root,3,0);
+	displayNthnode(root,value,0);
 }
 void Tree::displayNthnode(node *tempnode, ItemType nth, int counter)
 {
