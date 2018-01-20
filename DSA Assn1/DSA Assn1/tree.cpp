@@ -9,7 +9,7 @@ Tree::Tree()
 	root = NULL; // Intialise root node to NULL
 }
 Tree::~Tree() {};
-
+int counter = 0;
 Tree::node *Tree::insert(node *root,ItemType value)
 {
 	if (root == NULL) //Base case
@@ -243,19 +243,21 @@ void Tree::displayNthnode(int value)
 }
 void Tree::displayNthnode(node *tempnode, ItemType nth, int counter)
 {
+	counter = 5;
 	if (tempnode == NULL)
 	{
 		return;
 	}
-	counter++;
 	if (counter == nth)
 	{
 		cout << tempnode->value << "<< Value" << endl;
 		return;
 	}
-	displayNthnode(tempnode->left_node, nth,counter);
-	counter++;
+	
+	cout << tempnode->value << endl;
+	displayNthnode(tempnode->left_node, nth, counter);
 	displayNthnode(tempnode->right_node, nth, counter);
+	
 
 }
 void Tree::displayinasc()
@@ -272,4 +274,39 @@ void Tree::displayinasc(node *tempnode)
 	cout << tempnode->value << ",";
 	displayinasc(tempnode->right_node);
 
+}
+int Tree::printlevel(node *root, int level, int nth)
+{
+	if (root == NULL)
+		return counter;
+	if (level == 1)
+	{
+		counter++;
+		if (counter == nth)
+		{
+			cout << "Node has value: " << root->value << endl;
+		}
+		
+		return counter;
+	}
+	else if (level > 1)
+	{
+		printlevel(root->left_node, level - 1,nth);
+		printlevel(root->right_node, level - 1,nth);
+		return counter;
+	}
+}
+void Tree::printlevelorder(node *root,int nth)
+{
+	int h = height(root);
+	int i;
+	for (i = 1; i <= h; i++)
+	{
+		printlevel(root, i,nth);
+	}
+	counter = 0;
+}
+void Tree::printlevelorder(int nth)
+{
+	printlevelorder(root,nth);
 }

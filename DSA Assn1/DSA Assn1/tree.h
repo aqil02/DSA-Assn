@@ -16,7 +16,6 @@ private:
 public:
 	Tree(); //Step 1: Core Functionality 
 	~Tree();
-
 	node *insert(node *root,ItemType value); //Step 1: Insert (Regardless of balancing, only follow basic rules) //COMPLETE
 	void insert(int value);
 	node *minvaluenode(node *node);
@@ -43,5 +42,9 @@ public:
 	node *rightrotate(node *nodeN);
 	node *leftrightrotate(node *nodeN);
 	node *rightleftrotate(node *nodeN);
+
+	int printlevel(node *root, int level,int nth);
+	void printlevelorder(node *root,int nth);
+	void printlevelorder(int nth);
 	
 };

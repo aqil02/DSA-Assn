@@ -50,7 +50,7 @@ void menu()
 	case 5:
 		cout << "Please enter node to be displayed: ";
 		cin >> value;
-		tree.displayNthnode(value);
+		tree.printlevelorder(value);
 		menu();
 	case 6:
 		tree.fulldisplay();
@@ -64,7 +64,6 @@ void menu()
 }
 int main()
 {
-	int choice;
 	int total;
 	
 	cout << "Please enter a number to intialise the program: ";
@@ -84,8 +83,3 @@ int main()
     return 0;
 }
 
-void intialise()
-{
-	int number;
-
-}
