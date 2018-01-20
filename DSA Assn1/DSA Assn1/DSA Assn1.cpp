@@ -7,6 +7,7 @@
 
 using namespace std;
 Tree tree;
+int nodecount;
 int rendermenu()
 {
 	cout << "1. Search for value" << endl
@@ -19,6 +20,12 @@ int rendermenu()
 	cout << "Please enter a selection: ";
 	int choice;
 	cin >> choice;
+	if (cin.fail())
+	{
+		choice = 0;
+		cin.clear();
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	}
 	return choice;
 }
 void menu()
@@ -28,21 +35,60 @@ void menu()
 	choice = rendermenu();
 	switch (choice)
 	{
+	case 0:
+		cout << "Invalid choice" << endl;
+		menu();
 	case 1:
 		cout << "Please enter value to be searched: ";
 		cin >> value;
-		tree.search(value);
-		menu();
+		if (cin.fail())
+		{
+			cout << "Invalid choice" << endl;
+			choice = 0;
+			cin.clear();
+			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			menu();
+		}
+		else {
+			tree.search(value);
+			menu();
+		}
 	case 2:
 		cout << "Please enter value to be inserted: ";
 		cin >> value;
-		tree.insert(value);
-		menu();
+		if (cin.fail())
+		{
+			cout << "Invalid choice" << endl;
+			choice = 0;
+			cin.clear();
+			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			menu();
+		}
+		else 
+		{
+			tree.insert(value);
+			cout << "Successfully added!" << endl;
+			cout << endl;
+			menu();
+		}
 	case 3:
 		cout << "Please enter value to be removed: ";
 		cin >> value;
-		tree.remove(value);
-		menu();
+		if (cin.fail())
+		{
+			cout << "Invalid choice" << endl;
+			choice = 0;
+			cin.clear();
+			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			menu();
+		}
+		else
+		{
+			tree.remove(value);
+			cout << "Successfully removed" << endl;
+			cout << endl;
+			menu();
+		}
 	case 4:
 		tree.displayinasc();
 		cout << endl;
@@ -50,8 +96,24 @@ void menu()
 	case 5:
 		cout << "Please enter node to be displayed: ";
 		cin >> value;
-		tree.printlevelorder(value);
-		menu();
+		if (cin.fail())
+		{
+			cout << "Invalid choice" << endl;
+			choice = 0;
+			cin.clear();
+			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			menu();
+		}
+		else
+		{
+			if (value > nodecount)
+			{
+				cout << "WARNING:Value entered more than total nodes, exiting..." << endl;
+				menu();
+			}
+			tree.displayNthnode(value);
+			menu();
+		}
 	case 6:
 		tree.fulldisplay();
 		menu();
@@ -68,6 +130,13 @@ int main()
 	
 	cout << "Please enter a number to intialise the program: ";
 	cin >> total;
+	if (cin.fail())
+	{
+		cout << "Invalid choice" << endl;
+		cin.clear();
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		main();
+	}
 	int currenttotal = 0;
 	for (int i = 1; i <= total; i++)
 	{

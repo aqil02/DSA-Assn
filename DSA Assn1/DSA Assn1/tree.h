@@ -14,22 +14,23 @@ private:
 	};
 	node *root;
 public:
-	Tree(); //Step 1: Core Functionality 
+	Tree(); 
 	~Tree();
-	node *insert(node *root,ItemType value); //Step 1: Insert (Regardless of balancing, only follow basic rules) //COMPLETE
+	node *insert(node *root,ItemType value); 
 	void insert(int value);
 	node *minvaluenode(node *node);
 	node *remove(node* tempnode,ItemType value); 
 	void remove(ItemType value);
 
-	int search(ItemType value,node *targetnode);
+	void search(ItemType value,node *targetnode);
 	void search(ItemType value);
 
 	void displayinasc();
-	void displayinasc(node *tempnode); //COMPLETE
+	void displayinasc(node *tempnode); 
 
 	void displayNthnode(int value);
-	void displayNthnode(node *tempnode,ItemType nth,int counter);
+	int printlevel(node *root, int level, int nth);
+	void printlevelorder(node *root, int nth);
 
 	void fulldisplay(node *tempnode, int level);
 	void fulldisplay();//Overloaded
@@ -43,8 +44,6 @@ public:
 	node *leftrightrotate(node *nodeN);
 	node *rightleftrotate(node *nodeN);
 
-	int printlevel(node *root, int level,int nth);
-	void printlevelorder(node *root,int nth);
-	void printlevelorder(int nth);
+
 	
 };

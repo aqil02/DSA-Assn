@@ -35,54 +35,37 @@ void Tree::insert(int value)
 	root = insert(root, value);
 }
 
-int Tree::search(ItemType value,node *targetnode)
+void Tree::search(ItemType value,node *targetnode)
 {
-	int mode; //Decides whether to print out or not
-	
 	if (targetnode == NULL)
 	{
-		return 0;
+		cout << "Lost Target" << endl;
+		return;
 	}
 	else if (targetnode->value == value)
 	{
-		return 1;
+		cout << targetnode->value << endl;
 	}
-	
-	mode = search(value, targetnode->left_node);
-	if (mode == 1)
-	{
-		cout << "L -> ";
-		//cout << targetnode->value << endl;
-		return 1;
-	}
-	mode = search(value, targetnode->right_node);
-	if (mode == 1)
+	if (value > targetnode->value)
 	{
 		cout << "R -> ";
-		//cout << targetnode->value << endl;
-		return 1;
+		search(value, targetnode->right_node);
 	}
-	return 0;
+	else if (value < targetnode->value)
+	{
+		cout << "L -> ";
+		search(value, targetnode->left_node);
+	}
 }
 void Tree::search(ItemType value)
 {
-	int status = -1;
-	if (root->value == value)
+	if (value == root->value)
 	{
-		cout << "Root" << endl;
-		return;
+		cout << "Root -> " << value << endl;
 	}
-	status = search(value, root);
-	//cout << status << endl;
-	if (status == 0)
-	{
-		cout << "Lost Target" << endl;
-	}
-	else if (status == 1) 
-	{
-		cout << value << endl;
-	}
+	search(value, root);
 }
+
 //Remove
 Tree::node *Tree::minvaluenode(node *tempnode)
 {
@@ -237,29 +220,6 @@ void Tree::fulldisplay()
 	fulldisplay(root, 1);
 	cout << endl;
 }
-void Tree::displayNthnode(int value)
-{
-	displayNthnode(root,value,0);
-}
-void Tree::displayNthnode(node *tempnode, ItemType nth, int counter)
-{
-	counter = 5;
-	if (tempnode == NULL)
-	{
-		return;
-	}
-	if (counter == nth)
-	{
-		cout << tempnode->value << "<< Value" << endl;
-		return;
-	}
-	
-	cout << tempnode->value << endl;
-	displayNthnode(tempnode->left_node, nth, counter);
-	displayNthnode(tempnode->right_node, nth, counter);
-	
-
-}
 void Tree::displayinasc()
 {
 	displayinasc(root);
@@ -306,7 +266,7 @@ void Tree::printlevelorder(node *root,int nth)
 	}
 	counter = 0;
 }
-void Tree::printlevelorder(int nth)
+void Tree::displayNthnode(int nth)
 {
 	printlevelorder(root,nth);
 }
