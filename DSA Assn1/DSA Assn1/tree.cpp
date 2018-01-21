@@ -117,7 +117,10 @@ void Tree::search(ItemType value)
 	search(value, root);
 }
 
-//Remove
+//Minvaluenode attempts to find lowest value in the tree,starting tempnode specified as a parameter
+//It basically uses a while loop to keep traversing left until it reaches a NULL node(Means it hit the end)
+//There is one special case where the node specified does NOT have a left_node at the beginning
+//In this case we simply return the node we gave as its the smallest node we have
 Tree::node *Tree::minvaluenode(node *tempnode)
 {
 	node *current = new node;
@@ -133,6 +136,12 @@ Tree::node *Tree::minvaluenode(node *tempnode)
 	}
 	return current;
 }
+//Remove(Dependant on Minvaluenode function)
+//Traverses through the tree in a similar way to insert, in that it traverses left if the value is less than the current node's value, vice versa if more
+//If it hits a NULL node, it means value cant be found and we simply return our targeted node, changing nothing in the tree
+//Otherwise we check if it has 0,1 or 2 children and perform appropriate removal code
+//Void function remove checks if the value exist in the tree or not first, unchecks the printstatus flag as it uses the search function
+//If the value doesnt exist, we dont even run the recursive function and simply output an error message
 Tree::node *Tree::remove(node *root, ItemType value) //Target requested node --> link previous node to next node --> delete current node from memory
 {
 	if (root == NULL)
@@ -192,7 +201,9 @@ void Tree::remove(ItemType value)
 	}
 	printstatus = 1;
 }
+
 //Rebalancing code
+//Height simply returns the height of the highest node starting from node temp
 int Tree::height(node *temp)
 {
 	int h = 0;
@@ -205,6 +216,8 @@ int Tree::height(node *temp)
 	}
 	return h;
 }
+//Diff represents the balance factor, the difference between the left sub-tree and right sub-tree
+//It takes height of left and right sub-tree, then subtracts and returns the balance factor
 int Tree::diff(node *temp)
 {
 	int l_height = height(temp->left_node);
@@ -212,7 +225,7 @@ int Tree::diff(node *temp)
 	int factor = l_height - r_height;
 	return factor;
 }
-
+//Performs a standard left-rotate
 Tree::node *Tree::leftrotate(node *nodeN)
 {
 	node *nodeC = new node;
@@ -221,6 +234,7 @@ Tree::node *Tree::leftrotate(node *nodeN)
 	nodeC->left_node = nodeN;
 	return nodeC;
 }
+//Performs a standard right rotate
 Tree::node *Tree::rightrotate(node *nodeN)
 {
 	node *nodeC = new node;
@@ -229,6 +243,7 @@ Tree::node *Tree::rightrotate(node *nodeN)
 	nodeC->right_node = nodeN;
 	return nodeC;
 }
+//Performs a standard left-right rotate
 Tree::node *Tree::leftrightrotate(node *nodeN)
 {
 	node *nodeC = new node;
@@ -236,6 +251,7 @@ Tree::node *Tree::leftrightrotate(node *nodeN)
 	nodeN->left_node = leftrotate(nodeC);
 	return rightrotate(nodeN);
 }
+//Performs a standard right-left rotate
 Tree::node *Tree::rightleftrotate(node *nodeN)
 {
 	node *nodeC = new node;
@@ -243,6 +259,10 @@ Tree::node *Tree::rightleftrotate(node *nodeN)
 	nodeN->right_node = rightrotate(nodeC);
 	return leftrotate(nodeN);
 }
+//This takes in any node and rebalances it starting from node temp
+//It checks if there are any differences more than 1 between the left and right sub-tree
+//If there are, it performs the appropriate rotate based on whether the sub-tree is left or right heavy
+//It then returns the node it was given at first, but with all following nodes balanced
 Tree::node *Tree::rebalance(node *temp)
 {
 	int balance_factor = diff(temp);
@@ -263,6 +283,11 @@ Tree::node *Tree::rebalance(node *temp)
 	return temp;
 }
 //Display
+//Full display consists of a recursive and void function
+//Recursive function recursively renders the entire tree, with base case being the node being NULL
+//It traverses the sub-tree until it hits a NULL node(dead-end), ending that instance of the function
+//
+//Void function simply calls the recursive function with default parameters
 void Tree::fulldisplay(node *temp,int level)
 {
 	int i;
@@ -285,6 +310,8 @@ void Tree::fulldisplay()
 	fulldisplay(root, 1);
 	cout << endl;
 }
+//Displayinasc basically prints the tree in-order, when used with a balanced tree, results in the numbers being printed in ascending order
+//Overloaded function basically just calls it
 void Tree::displayinasc()
 {
 	displayinasc(root);
@@ -300,6 +327,7 @@ void Tree::displayinasc(node *tempnode)
 	displayinasc(tempnode->right_node);
 
 }
+
 int Tree::printlevel(node *root, int level, int nth)
 {
 	if (root == NULL)
