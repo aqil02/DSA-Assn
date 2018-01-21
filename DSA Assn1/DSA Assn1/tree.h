@@ -10,7 +10,7 @@ private:
 		ItemType value;
 		node *left_node;
 		node *right_node;
-		node() :value(NULL),left_node(NULL), right_node(NULL) {}
+		node() :value(NULL),left_node(NULL), right_node(NULL) {} //Initialises all variables to be NULL to avoid NULLPTR errors(Uninitialised nodes cannot be read)
 	};
 	node *root;
 public:

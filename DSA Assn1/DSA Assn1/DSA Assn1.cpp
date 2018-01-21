@@ -47,7 +47,7 @@ void menu()
 	case 1:
 		cout << "Please enter value to be searched: ";
 		cin >> value;
-		if (cin.fail())
+		if (cin.fail() || value < 0)
 		{
 			cout << "Invalid choice" << endl;
 			choice = 0;
@@ -62,7 +62,7 @@ void menu()
 	case 2:
 		cout << "Please enter value to be inserted: ";
 		cin >> value;
-		if (cin.fail())
+		if (cin.fail() || value < 0)
 		{
 			cout << "Invalid choice" << endl;
 			choice = 0;
@@ -80,7 +80,7 @@ void menu()
 	case 3:
 		cout << "Please enter value to be removed: ";
 		cin >> value;
-		if (cin.fail())
+		if (cin.fail() || value < 0)
 		{
 			cout << "Invalid choice" << endl;
 			choice = 0;

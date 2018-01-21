@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Tree">
-    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Position X="0.5" Y="0.5" Width="2.75" />
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
@@ -13,12 +13,12 @@
       </Struct>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>CAgAAAAAAADAQAQkBAAgAAFAAAAAgAAAACAAYAAIAAA=</HashCode>
+      <HashCode>CAgAAAAAAADAQAQkBAAgAAFAAAAAgAAAICAAYAAIAAA=</HashCode>
       <FileName>tree.h</FileName>
     </TypeIdentifier>
   </Class>
   <Typedef Name="ItemType" Collapsed="true">
-    <Position X="0.5" Y="1.75" Width="1.5" />
+    <Position X="13" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>tree.h</FileName>

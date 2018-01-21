@@ -15,6 +15,7 @@ Tree::~Tree() {};
 int counter = 0; //Global counter used for Nth node function, allows recursive function 
 int status = -1; //Global status indicator used to check if search function returned a hit or not
 int printstatus = 1; //Global flag to ensure functions that utilise other functions do not invoke any print functions (e.g. Insert using Search for value validation)
+
 //Insert function
 //This function is seperated into two, a recursive function and a void function.
 //Recursive function does the actual search using the simple principle of a BST in that left subnode is smaller than root while right is bigger
@@ -107,6 +108,7 @@ void Tree::search(ItemType value)
 	if (root == NULL)
 	{
 		status = 0;
+		cout << "Tree is empty!" << endl;
 		return;
 	}
 	if (value == root->value)
@@ -119,21 +121,20 @@ void Tree::search(ItemType value)
 
 //Minvaluenode attempts to find lowest value in the tree,starting tempnode specified as a parameter
 //It basically uses a while loop to keep traversing left until it reaches a NULL node(Means it hit the end)
-//There is one special case where the node specified does NOT have a left_node at the beginning
-//In this case we simply return the node we gave as its the smallest node we have
+//It then returns the current node
 Tree::node *Tree::minvaluenode(node *tempnode)
 {
 	node *current = new node;
-
+	current = tempnode;
 	//While loop to see left-most(lowest value) leaf
 	while (current->left_node != NULL)
 	{
 		current = current->left_node;
 	}
-	if (current->value == 0)
-	{
-		current = tempnode;
-	}
+	//if (current->value == 0) //Didn't need this??
+	//{
+	//	current = tempnode;
+	//}
 	return current;
 }
 //Remove(Dependant on Minvaluenode function)
@@ -144,12 +145,12 @@ Tree::node *Tree::minvaluenode(node *tempnode)
 //If the value doesnt exist, we dont even run the recursive function and simply output an error message
 Tree::node *Tree::remove(node *root, ItemType value) //Target requested node --> link previous node to next node --> delete current node from memory
 {
-	if (root == NULL)
-	{
-		cout << "Target not found" << endl;
-		return root; //Target not found
-	}
-	else if (value > root->value)
+	//if (root == NULL)
+	//{
+	//	cout << "Target not found" << endl; //Redundant code
+	//	return root; //Target not found
+	//}
+	if (value > root->value)
 	{
 		root->right_node = remove(root->right_node, value);
 	}
@@ -290,7 +291,6 @@ Tree::node *Tree::rebalance(node *temp)
 //Void function simply calls the recursive function with default parameters
 void Tree::fulldisplay(node *temp,int level)
 {
-	int i;
 	if (temp != NULL) //Base case
 	{
 		fulldisplay(temp->right_node, level + 1);
@@ -299,7 +299,7 @@ void Tree::fulldisplay(node *temp,int level)
 		{
 			cout << "Root -> ";
 		}
-		for (i = 0; i < level && temp != root; i++)
+		for (int i = 0; i < level && temp != root; i++)
 			cout << "       ";
 		cout << temp->value;
 		fulldisplay(temp->left_node, level + 1);
@@ -363,8 +363,7 @@ int Tree::printlevel(node *root, int level, int nth)
 void Tree::displayNthnode(int nth)
 {
 	int h = height(root);
-	int i;
-	for (i = 1; i <= h; i++)
+	for (int i = 1; i <= h; i++)
 	{
 		printlevel(root, i,nth);
 	}
