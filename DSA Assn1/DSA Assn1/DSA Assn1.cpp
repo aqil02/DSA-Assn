@@ -10,7 +10,8 @@ Tree tree;
 int nodecount;
 int rendermenu()
 {
-	cout << "1. Search for value" << endl
+		cout << endl
+		<< "1. Search for value" << endl
 		<< "2. Add a value" << endl
 		<< "3. Remove a value" << endl
 		<< "4. Diplay values in ascending order" << endl
@@ -67,7 +68,6 @@ void menu()
 		else 
 		{
 			tree.insert(value);
-			cout << "Successfully added!" << endl;
 			cout << endl;
 			menu();
 		}
@@ -85,7 +85,6 @@ void menu()
 		else
 		{
 			tree.remove(value);
-			cout << "Successfully removed" << endl;
 			cout << endl;
 			menu();
 		}

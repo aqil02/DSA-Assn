@@ -10,6 +10,7 @@ Tree::Tree()
 }
 Tree::~Tree() {};
 int counter = 0;
+int status = -1;
 Tree::node *Tree::insert(node *root,ItemType value)
 {
 	if (root == NULL) //Base case
@@ -32,7 +33,19 @@ Tree::node *Tree::insert(node *root,ItemType value)
 }
 void Tree::insert(int value)
 {
-	root = insert(root, value);
+	search(value);
+	if (status == 1)
+	{
+		cout << "Value already exists in tree!" << endl;
+		status = -1;
+		return;
+	}
+	else if (status == 0) 
+	{
+		root = insert(root, value);
+		cout << "Successfully added!" << endl;
+		status = -1;
+	}
 }
 
 void Tree::search(ItemType value,node *targetnode)
@@ -40,11 +53,13 @@ void Tree::search(ItemType value,node *targetnode)
 	if (targetnode == NULL)
 	{
 		cout << "Lost Target" << endl;
+		status = 0;
 		return;
 	}
 	else if (targetnode->value == value)
 	{
 		cout << targetnode->value << endl;
+		status = 1;
 	}
 	if (value > targetnode->value)
 	{
@@ -59,9 +74,15 @@ void Tree::search(ItemType value,node *targetnode)
 }
 void Tree::search(ItemType value)
 {
-	if (value == root->value)
+	if (root == NULL)
+	{
+		status = 0;
+		return;
+	}
+	else if (value == root->value)
 	{
 		cout << "Root -> " << value << endl;
+		status = 1;
 	}
 	search(value, root);
 }
@@ -124,8 +145,20 @@ Tree::node *Tree::remove(node *root, ItemType value) //Target requested node -->
 }
 void Tree::remove(ItemType value)
 {
-	remove(root, value);
-	root = rebalance(root); //Returns the balanced node with proper connected nodes
+	search(value);
+	if (status == 0)
+	{
+		cout << "Value does not exist in tree!" << endl;
+		status = -1;
+		return;
+	}
+	else if(status == 1)
+	{
+		remove(root, value);
+		cout << "Successfully removed" << endl;
+		root = rebalance(root); //Returns the balanced node with proper connected nodes
+		status = -1;
+	}
 }
 //Rebalancing code
 int Tree::height(node *temp)
