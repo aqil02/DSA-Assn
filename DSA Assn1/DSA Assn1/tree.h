@@ -16,33 +16,39 @@ private:
 public:
 	Tree(); 
 	~Tree();
+	//Insert
 	node *insert(node *root,ItemType value); 
-	void insert(int value);
+	void insert(int value); //Overloaded
+
+	//Remove
 	node *minvaluenode(node *node);
 	node *remove(node* tempnode,ItemType value); 
-	void remove(ItemType value);
+	void remove(ItemType value); //Overloaded
 
+	//Search
 	void search(ItemType value,node *targetnode);
-	void search(ItemType value);
+	void search(ItemType value); //Overloaded
 
-	void displayinasc();
-	void displayinasc(node *tempnode); 
+	//Display in ascending order
+	void displayinasc(node *tempnode);
+	void displayinasc();//Overloaded
 
-	void displayNthnode(int value);
+	//Display Nth node
 	int printlevel(node *root, int level, int nth);
-	void printlevelorder(node *root, int nth);
+	void displayNthnode(int nth);
 
+	//Displays full tree
 	void fulldisplay(node *tempnode, int level);
 	void fulldisplay();//Overloaded
 
 	//Rebalancing algorithm
-	node *rebalance(node *temp); 
-	int height(node *temp);
+	int height(node *temp); 
 	int diff(node *temp);
 	node *leftrotate(node *nodeN);
 	node *rightrotate(node *nodeN);
 	node *leftrightrotate(node *nodeN);
 	node *rightleftrotate(node *nodeN);
+	node *rebalance(node *temp);
 
 
 	

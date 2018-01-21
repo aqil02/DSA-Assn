@@ -327,11 +327,18 @@ void Tree::displayinasc(node *tempnode)
 	displayinasc(tempnode->right_node);
 
 }
+//printlevel,printlevelorder and displayNthnode make up the displayNthnode
+//print level takes in a starting node, level to print and nth value to be printed
+//It is a recursive function with base cases, root == NULL and level == 1
+//At each recursive stage, we input the same parameters except the level is subtracted by 1 until base case is reached
+//When level == 1,it means we've reached one of that level's node
+//Since we hit one of the nodes, we increment a coherent global variable named counter by 1 to represent the number of nodes read so far
+//That node's value is ONLY printed when the counter matches the node number to be read, as it means that the requested node has been targetted
 
 int Tree::printlevel(node *root, int level, int nth)
 {
 	if (root == NULL)
-		return counter;
+		return 0;
 	if (level == 1)
 	{
 		counter++;
@@ -340,16 +347,20 @@ int Tree::printlevel(node *root, int level, int nth)
 			cout << "Node has value: " << root->value << endl;
 		}
 		
-		return counter;
+		return 0;
 	}
 	else if (level > 1)
 	{
 		printlevel(root->left_node, level - 1,nth);
 		printlevel(root->right_node, level - 1,nth);
-		return counter;
+		return 0;
 	}
 }
-void Tree::printlevelorder(node *root,int nth)
+//printlevelorder takes in a node(root by default to search entire tree) and nth node to be read
+//First it finds the height of the highest node using the height function
+//We then use a for loop to check each node level by level, up to the highest level, after which the for loop stops
+//At the end of the search, the global counter must be set to 0 as the next few searches depends on the counter being 0 at the start of the search
+void Tree::displayNthnode(int nth)
 {
 	int h = height(root);
 	int i;
@@ -358,8 +369,4 @@ void Tree::printlevelorder(node *root,int nth)
 		printlevel(root, i,nth);
 	}
 	counter = 0;
-}
-void Tree::displayNthnode(int nth)
-{
-	printlevelorder(root,nth);
 }

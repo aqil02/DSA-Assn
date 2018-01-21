@@ -6,8 +6,9 @@
 #include <iostream>
 
 using namespace std;
-Tree tree;
-int nodecount;
+Tree tree; //Defines the tree
+int nodecount = 0; //Global counter to check number of nodes for user validation
+//Renders the menu and checks if user-input is an integer, sets it to 0 and returns a proper choice integer otherwise
 int rendermenu()
 {
 		cout << endl
@@ -29,6 +30,10 @@ int rendermenu()
 	}
 	return choice;
 }
+//Switch case to refer program to the proper tree functions. Case 0 represents an invalid choice as it either means the user entered a non-integer which results in choice being 0
+//Or the user entered 0 which are both invalid anyway
+//Each option has user-validation to ensure a correct integer is entered for added and removing including checking if values already exists or not in the tree before running the functions
+//Default case means any integer other than 1-7, resulting in an error message
 void menu()
 {
 	int choice;
@@ -68,6 +73,7 @@ void menu()
 		else 
 		{
 			tree.insert(value);
+			nodecount++;
 			cout << endl;
 			menu();
 		}
@@ -86,6 +92,7 @@ void menu()
 		{
 			tree.remove(value);
 			cout << endl;
+			nodecount--;
 			menu();
 		}
 	case 4:
@@ -123,6 +130,9 @@ void menu()
 		menu();
 	}
 }
+//Intiliases the program by adding the correct numbers to the tree at the start of the program
+//Uses user validation and restarts the main program if input is not an integer
+//Uses a for-loop afterwards to add the numbers one-by-one and initialises the main-menu afterwards
 int main()
 {
 	int total;
@@ -140,6 +150,7 @@ int main()
 	for (int i = 1; i <= total; i++)
 	{
 		tree.insert(i);
+		nodecount++;
 		currenttotal += i;
 		if (currenttotal > total)
 		{
