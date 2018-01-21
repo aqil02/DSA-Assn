@@ -1,5 +1,5 @@
-// DSA Assn1.cpp : Defines the entry point for the console application.
-//
+//Team Member's names: Aqil Ahmad Subahan, Lee ZhiYong
+//Team Member's IDs: S10166743C, S10173753F
 
 #include "stdafx.h"
 #include "tree.h"

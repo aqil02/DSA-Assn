@@ -1,3 +1,6 @@
+//Team Member's names: Aqil Ahmad Subahan, Lee ZhiYong
+//Team Member's IDs: S10166743C, S10173753F
+
 #include "stdafx.h"
 #include "tree.h"
 #include <iostream>
@@ -9,8 +12,18 @@ Tree::Tree()
 	root = NULL; // Intialise root node to NULL
 }
 Tree::~Tree() {};
-int counter = 0;
-int status = -1;
+int counter = 0; //Global counter used for Nth node function, allows recursive function 
+int status = -1; //Global status indicator used to check if search function returned a hit or not
+int printstatus = 1; //Global flag to ensure functions that utilise other functions do not invoke any print functions (e.g. Insert using Search for value validation)
+//Insert function
+//This function is seperated into two, a recursive function and a void function.
+//Recursive function does the actual search using the simple principle of a BST in that left subnode is smaller than root while right is bigger
+//Thus, first it checks whether the inserted value is bigger or smaller than root, than traverses in that direction
+//Eventually, it reaches an empty node where it can be inserted, this is the base case at which a new node is created and inserted
+//It then balances the tree using the rebalance function
+//The void function introduces validation to ensure duplicate values cannot be entered using the search function to see if value is already in tree
+//Variable status stores the outcome of the search(successful or not) and allows us to see if the value is already in the tree
+//From there, we can decide whether or not to induce the recursive function in the first place or not
 Tree::node *Tree::insert(node *root,ItemType value)
 {
 	if (root == NULL) //Base case
@@ -33,6 +46,7 @@ Tree::node *Tree::insert(node *root,ItemType value)
 }
 void Tree::insert(int value)
 {
+	printstatus = 0;
 	search(value);
 	if (status == 1)
 	{
@@ -46,13 +60,23 @@ void Tree::insert(int value)
 		cout << "Successfully added!" << endl;
 		status = -1;
 	}
+	printstatus = 1;
 }
-
+//Search function is made up of a recursive function and void function to activate the recursive function
+//Recursive function works with the same principles as the insert function(If the value is bigger than the root, traverse to the right subnode, smaller means left subnode)
+//After each traversal, we show what direction the program takes with cout
+//If it hits a NULL node, it means search did not fine the value, and that we lost the target
+//Otherwise it means we hit the value we need and print out the value and change the global variable status to 1 to tell the rest of the program that the search succeeded
+//Void function checks for an empty tree first, then checks if the value equals the tree, this saves resources as we dont have to access the recursive function if we know the root node has the value
+//Otherwise, the void function takes a value and enters it into the recursive function
 void Tree::search(ItemType value,node *targetnode)
 {
 	if (targetnode == NULL)
 	{
-		cout << "Lost Target" << endl;
+		if (printstatus == 1)
+		{
+			cout << "Lost Target" << endl;
+		}
 		status = 0;
 		return;
 	}
@@ -63,12 +87,18 @@ void Tree::search(ItemType value,node *targetnode)
 	}
 	if (value > targetnode->value)
 	{
-		cout << "R -> ";
+		if (printstatus == 1)
+		{
+			cout << "R -> ";
+		}
 		search(value, targetnode->right_node);
 	}
 	else if (value < targetnode->value)
 	{
-		cout << "L -> ";
+		if (printstatus == 1)
+		{
+			cout << "L -> ";
+		}
 		search(value, targetnode->left_node);
 	}
 }
@@ -79,7 +109,7 @@ void Tree::search(ItemType value)
 		status = 0;
 		return;
 	}
-	else if (value == root->value)
+	if (value == root->value)
 	{
 		cout << "Root -> " << value << endl;
 		status = 1;
@@ -145,6 +175,7 @@ Tree::node *Tree::remove(node *root, ItemType value) //Target requested node -->
 }
 void Tree::remove(ItemType value)
 {
+	printstatus = 0;
 	search(value);
 	if (status == 0)
 	{
@@ -159,6 +190,7 @@ void Tree::remove(ItemType value)
 		root = rebalance(root); //Returns the balanced node with proper connected nodes
 		status = -1;
 	}
+	printstatus = 1;
 }
 //Rebalancing code
 int Tree::height(node *temp)
