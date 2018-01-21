@@ -8,6 +8,7 @@
 using namespace std;
 Tree tree; //Defines the tree
 int nodecount = 0; //Global counter to check number of nodes for user validation
+
 //Renders the menu and checks if user-input is an integer, sets it to 0 and returns a proper choice integer otherwise
 int rendermenu()
 {

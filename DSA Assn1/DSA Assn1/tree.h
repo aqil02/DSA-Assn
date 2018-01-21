@@ -16,6 +16,7 @@ private:
 public:
 	Tree(); 
 	~Tree();
+
 	//Insert
 	node *insert(node *root,ItemType value); 
 	void insert(int value); //Overloaded

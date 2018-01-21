@@ -131,10 +131,6 @@ Tree::node *Tree::minvaluenode(node *tempnode)
 	{
 		current = current->left_node;
 	}
-	//if (current->value == 0) //Didn't need this??
-	//{
-	//	current = tempnode;
-	//}
 	return current;
 }
 //Remove(Dependant on Minvaluenode function)
@@ -145,11 +141,6 @@ Tree::node *Tree::minvaluenode(node *tempnode)
 //If the value doesnt exist, we dont even run the recursive function and simply output an error message
 Tree::node *Tree::remove(node *root, ItemType value) //Target requested node --> link previous node to next node --> delete current node from memory
 {
-	//if (root == NULL)
-	//{
-	//	cout << "Target not found" << endl; //Redundant code
-	//	return root; //Target not found
-	//}
 	if (value > root->value)
 	{
 		root->right_node = remove(root->right_node, value);
@@ -327,14 +318,14 @@ void Tree::displayinasc(node *tempnode)
 	displayinasc(tempnode->right_node);
 
 }
-//printlevel,printlevelorder and displayNthnode make up the displayNthnode
+
+//printlevel and displayNthnode make up the displayNthnode
 //print level takes in a starting node, level to print and nth value to be printed
 //It is a recursive function with base cases, root == NULL and level == 1
 //At each recursive stage, we input the same parameters except the level is subtracted by 1 until base case is reached
 //When level == 1,it means we've reached one of that level's node
 //Since we hit one of the nodes, we increment a coherent global variable named counter by 1 to represent the number of nodes read so far
 //That node's value is ONLY printed when the counter matches the node number to be read, as it means that the requested node has been targetted
-
 int Tree::printlevel(node *root, int level, int nth)
 {
 	if (root == NULL)
